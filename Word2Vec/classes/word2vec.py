@@ -127,9 +127,14 @@ class Word2Vec:
         np.random.seed(self.random_state)
         self.U = np.random.randn(self.dim, len(self.vocabulary)) * 0.1
         self.V = np.random.randn(self.dim, len(self.vocabulary)) * 0.1
+            
+    def predict(self, words):
         
-    def predict(self, word):
-        word_index = self.vocabulary[word]
-        output = np.dot(self.U[:, word_index].T, self.V)
-        exp = np.exp(output -  np.max(output))
-        return exp / np.sum(exp)        
+        assert isinstance(words, list), 'words argument must be a list'
+        similarity = np.zeros(self.U.shape[1])
+        for word in words:
+            index = self.vocabulary[word]
+            context_vector = self.U[:, index]
+            similarity += self.V.T.dot(context_vector)
+        exp = np.exp(similarity - np.max(similarity))
+        return exp / np.sum(exp)

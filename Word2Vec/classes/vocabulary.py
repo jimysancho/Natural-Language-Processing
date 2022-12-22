@@ -12,20 +12,9 @@ class Vocabulary:
 
     def load_file(self):
         
-        if self.path is not None:
-            with open(self.path, 'r', encoding='utf-8') as f:
-                self.file = f.read().lower().strip().split('\n')
-        else:
-            self.file = '''Machine learning is the study of computer algorithms that \
-                           improve automatically through experience. It is seen as a \
-                           subset of artificial intelligence. Machine learning algorithms \
-                           build a mathematical model based on sample data, known as \
-                           training data, in order to make predictions or decisions without \
-                           being explicitly programmed to do so. Machine learning algorithms \
-                           are used in a wide variety of applications, such as email filtering \
-                           and computer vision, where it is difficult or infeasible to develop \
-                           conventional algorithms to perform the needed tasks.'''.lower().strip().split('\n')
-            
+        with open(self.path, 'r', encoding='utf-8') as f:
+            self.file = f.read().lower().strip().split('\n')
+        
     def create_vocabulary(self):
         
         pattern = re.compile(r'[A-Za-z]+[\w^\']*|[\w^\']*[A-Za-z]+[\w^\']*')
