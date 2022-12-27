@@ -4,7 +4,10 @@ import numpy as np
 class RNN: 
     
     def __init__(self, hidden_units, input_units, output_units, lr=0.01, 
-                 dtype='many-to-many', cost_type='mse'):
+                 dtype='many-to-many', cost_type='mse', regression=False):
+        
+        assert isinstance(regression, bool), 'regression argument must be bool'
+        self.regression = regression
                 
         self.type = {'many-to-many': [True, False], 'many-to-one': [False, True]}
         self.cost_type = {'mse', 'negative-log'}
@@ -20,7 +23,7 @@ class RNN:
         self.input_units = input_units
         self.lr = lr
         self.__init_weigths()
-        
+    
     def forward(self, input_seq, target_seq):
         
         outputs = {}
@@ -39,13 +42,14 @@ class RNN:
                 
                 output = self.V.dot(hidden_prev)
                 outputs[t] = output.copy()
-                prediction = self.softmax(output)
+                prediction = self.softmax(output) if not self.regression else output.copy()
                 predictions[t] = prediction.copy()
                 cost += self.compute_cost(output, target_t)
             
             return cost, predictions, outputs, hidden_outputs, hidden_states
         
         for t, input_t in enumerate(input_seq):
+            input_t = input_t.reshape(-1, 1)
             z = self.U.dot(input_t) + self.W.dot(hidden_prev) + self.b
             hidden_outputs[t] = z.copy()
             hidden_prev = self.sigmoid(z)
@@ -53,9 +57,9 @@ class RNN:
             
             output = self.V.dot(hidden_prev)
             outputs[t] = output.copy()
-            
-        prediction = output[t].copy()
-        cost = self.compute_cost(output, target_seq[0])            
+        
+        prediction = self.softmax(output) if not self.regression else output.copy()
+        cost = self.compute_cost(prediction, target_seq)            
         return cost, prediction, outputs, hidden_outputs, hidden_states
     
     def backward(self, input_seq, target_seq, predictions, outputs, hidden_outputs, hidden_states):
@@ -66,10 +70,19 @@ class RNN:
         self.grad_b = np.zeros_like(self.b)
         
         dh_grad_next = np.zeros_like(self.b)
+        target_t = target_seq.copy()
         
+        target_t = target_t.reshape(predictions.shape)
+        dy = (predictions - target_t)
+        dh_grad_next = self.V.T.dot(dy) 
+        self.grad_V += dy.dot(hidden_outputs[len(input_seq)-1].T)
+        
+        assert self.grad_V.shape == self.V.shape
+            
         for t in reversed(range(len(input_seq))):
             
-            target_t, input_t, output_t, prediction_t, hidden_t = target_seq[t], input_seq[t], predictions[t], outputs[t], hidden_states[t]
+            input_t,output_t, hidden_t = input_seq[t], outputs[t], hidden_states[t]
+            input_t = input_t.reshape(-1, 1)
             h_t = hidden_outputs[t]
             hidden_prev = hidden_states[t-1]
                         
@@ -78,16 +91,17 @@ class RNN:
             else:
                 hidden_t_next = np.zeros_like(hidden_outputs[t])
                         
-            dy = (prediction_t - target_t)
-            
-            dh = self.V.T.dot(dy) + self.W.T.dot(self.sigmoid(hidden_t_next, True) * dh_grad_next)
+            dh = self.W.T.dot(self.sigmoid(hidden_t_next, True) * dh_grad_next)
             dh_grad_next = dh.copy()
             
-            self.grad_V += dy.dot(hidden_t.T)
             self.grad_W += (dh * self.sigmoid(h_t, True)).dot(hidden_prev.T)
             self.grad_U += (dh * self.sigmoid(h_t, True)).dot(input_t.T)
             self.grad_b += (dh * self.sigmoid(h_t, True))
-    
+            
+            assert (self.grad_W.shape == self.W.shape)
+            assert (self.grad_U.shape == self.U.shape)
+            assert (self.grad_b.shape == self.b.shape)
+                
     def update_weigths(self):
         self.U -= self.lr * self.grad_U
         self.V -= self.lr * self.grad_V
@@ -107,13 +121,13 @@ class RNN:
         return self.sigmoid(z, False) * (1.0 - self.sigmoid(z, False))
     
     def compute_cost(self, y_pred, y_target):
-       if self.cost == 'mse':
-           return np.sum((y_pred - y_target) ** 2)
-       return -np.mean(y_target * np.log(y_pred + 1e-12))
+        if self.cost == 'mse':
+            return np.sum((y_pred - y_target) ** 2)
+        return -np.mean(y_target * np.log(y_pred + 1e-12))
     
     def softmax(self, prediction):
         exp = np.exp(prediction - np.max(prediction))
-        return exp / np.sum(exp, axis=1, keepdims=True)
+        return exp / np.sum(exp, axis=0, keepdims=True)
     
     def predict(self, input_seq):
         
@@ -124,6 +138,7 @@ class RNN:
         hidden_states = {-1: hidden_prev}      
           
         for t, input_t in enumerate(input_seq):
+            input_t = input_t.reshape(-1, 1)
             z = self.U.dot(input_t) + self.W.dot(hidden_prev) + self.b
             hidden_outputs[t] = z.copy()
             hidden_prev = self.sigmoid(z)
@@ -131,10 +146,6 @@ class RNN:
             
             output = self.V.dot(hidden_prev)
             outputs[t] = output.copy()
-            prediction = self.softmax(output)
-            predictions[t] = prediction.copy()
             
-        prediction = [output[1] for output in outputs.items()]
+        prediction = self.softmax(output) if not self.regression else output.copy()
         return prediction
-        
-            
