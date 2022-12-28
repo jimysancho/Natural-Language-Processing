@@ -63,7 +63,7 @@ $$
 
 In the next figure we can see how the cost function diminsh as a function of time: 
 
-![Getting Started](./images/cost_word2vec.png)
+![Alt Text](./images/cost_word2vec.png)
 
 The notebook where you will find the code is the `test.ipynb` notebook. 
 
@@ -71,7 +71,7 @@ The notebook where you will find the code is the `test.ipynb` notebook.
 
 Using PCA we can see how the words have been rearranged in a 2D space (in this image there are only the first 100 words of the dataset): 
 
-![Screenshot](./images/word_vector_space.png)
+![Alt Text](./images/word_vector_space.png)
 
 The distance from the origin have been clipped in order to see better the results. As we can see, the conexions like: *of, and, the, it, that, in, with, at, ...* are at the left side of the image while some important words of the dataset remain in the center. 
 
