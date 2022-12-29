@@ -15,6 +15,7 @@ In order to implement a scratch implementation, is necessary to derive the forwa
 
 ## 2.1 Forward propagation
 **Hidden state at time step t**
+
 $$
 \begin{equation}
 h_t = f(W h_{t-1} + U i_t + b)
@@ -22,6 +23,7 @@ h_t = f(W h_{t-1} + U i_t + b)
 $$
 
 **Prediction at time step t**
+
 $$
 \begin{equation}
 \hat{y}_t = \text{softmax}(V h_t)
