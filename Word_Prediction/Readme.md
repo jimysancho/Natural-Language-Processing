@@ -24,7 +24,7 @@ $$
 
 ## 2.2 Backpropagation through time
 
-This section is not going to be a step-by-step derviation of the backpropagation equations. Looking at the equations of the forward propagation and applying the chain rule, if you have some knowloedge of vector calculus, this task is straightforward. Nevertheless, in my github repository: https://github.com/jimysancho/Weather-Forecasting/ you can find the derivation of the backpropagation equations of the  more complex unit `LSTM` in the file: `Math_lstm.pdf` which can served you as a reference to derive this equations. Maybe in the future I will upload a pdf file with a step-by-step derivation. 
+This section is not going to be a step-by-step derviation of the backpropagation equations. Looking at the equations of the forward propagation and applying the chain rule, if you have some knowloedge of vector calculus, this task is straightforward. Nevertheless, in my github repository: https://github.com/jimysancho/Weather-Forecasting/ you can find the derivation of the backpropagation equations of the  more complex unit `LSTM` in the file: `Math_lstm.pdf` which can served you as a reference to derive this equations. 
 
 $$
 \begin{equation}
@@ -103,9 +103,7 @@ The model appears to be working. Let's see how it performs on different datasets
 
 ## 4.1 Training set
 * **Accuracy**: 63.1 %. 
-* **Examples**: 
-
-![Getting Started](./images/train_examples.png)
+* **Examples**: See the `Next_Word_Prediction.ipynb` notebook. 
 
 ## 4.2 Test set
 
