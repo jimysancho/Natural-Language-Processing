@@ -18,13 +18,7 @@ In order to implement a scratch implementation, is necessary to derive the forwa
 
 $$
 \begin{equation}
-h_t = f(W h_{t-1} + U i_t + b)
-\end{equation}
-$$
-
-$$
-\begin{equation}
-\hat{y}_t = \text{softmax}(V h_t)
+h_t = f(W h_{t-1} + U i_t + b) \hspace{1cm} \hat{y}_t = \text{softmax}(V h_t)
 \end{equation}
 $$
 
