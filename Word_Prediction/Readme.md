@@ -31,7 +31,7 @@ $$
 $$
 \delta h_t = V^T (\delta \hat{y}_t \odot \frac{\partial \text{softmax}}{\partial (V h_t)}) + W^T (\delta h_{t+1} \odot \frac{\partial f}{\partial x} |_t)
 $$
-where the derivative of $f$ is evaluated at the input of $f$ at time step t. 
+
 $$
 \delta W = \sum_t (\delta h_t \odot \frac{\partial f}{\partial x}|_{t}) h_{t-1}^T
 $$
@@ -40,6 +40,7 @@ $$
 \delta U = \sum_t (\delta h_t \odot \frac{\partial f}{\partial x}|_{t}) x_t^T \hspace{1cm} \delta b = (\delta h_t \odot \frac{\partial f}{\partial x}|_{t})
 $$
 
+where the derivative of $f$ is evaluated at the input of $f$ at time step t. 
 # 3. Next word prediction
 
 The first thing we need to do is to train the Word2Vec on some data so that we can feed to the recurrent neural networks the word embeddings. 
