@@ -37,7 +37,7 @@ $$
 $$
 
 $$
-\delta U = \sum_t (\delta h_t \odot \frac{\partial f}{\partial x}|_{t}) x_t^T \hspace{1cm} \delta b = (\delta h_t \odot \frac{\partial f}{\partial x}|_{t})
+\delta U = \sum_t (\delta h_t \odot \frac{\partial f}{\partial x}|_{t}) x_t^T \hspace{1cm} \delta b = \sum_t (\delta h_t \odot \frac{\partial f}{\partial x}|_{t})
 $$
 
 where the derivative of $f$ is evaluated at the input of $f$ at time step t. 
