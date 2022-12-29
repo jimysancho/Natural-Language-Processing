@@ -37,11 +37,7 @@ $$
 $$
 
 $$
-\delta U = \sum_t (\delta h_t \odot \frac{\partial f}{\partial x}|_{t}) x_t^T
-$$
-
-$$
-\delta b = (\delta h_t \odot \frac{\partial f}{\partial x}|_{t})
+\delta U = \sum_t (\delta h_t \odot \frac{\partial f}{\partial x}|_{t}) x_t^T \hspace{1cm} \delta b = (\delta h_t \odot \frac{\partial f}{\partial x}|_{t})
 $$
 
 # 3. Next word prediction
