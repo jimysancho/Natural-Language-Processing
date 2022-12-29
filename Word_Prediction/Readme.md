@@ -14,15 +14,13 @@ The scratch implementation of the RNN and Word2Vec can be found in the `data` fo
 In order to implement a scratch implementation, is necessary to derive the forward and backpropagation equations of a Recurrent Neural Networks. 
 
 ## 2.1 Forward propagation
-**Hidden state at time step t**
+**Hidden and prediction state at time step t**
 
 $$
 \begin{equation}
 h_t = f(W h_{t-1} + U i_t + b)
 \end{equation}
 $$
-
-**Prediction at time step t**
 
 $$
 \begin{equation}
