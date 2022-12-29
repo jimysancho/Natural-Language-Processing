@@ -17,9 +17,7 @@ In order to implement a scratch implementation, is necessary to derive the forwa
 **Hidden and prediction state at time step t**
 
 $$
-\begin{equation}
 h_t = f(W h_{t-1} + U i_t + b) \hspace{1cm} \hat{y}_t = \text{softmax}(V h_t)
-\end{equation}
 $$
 
 ## 2.2 Backpropagation through time
@@ -27,33 +25,23 @@ $$
 This section is not going to be a step-by-step derviation of the backpropagation equations. Looking at the equations of the forward propagation and applying the chain rule, if you have some knowloedge of vector calculus, this task is straightforward. Nevertheless, in my github repository: https://github.com/jimysancho/Weather-Forecasting/ you can find the derivation of the backpropagation equations of the  more complex unit `LSTM` in the file: `Math_lstm.pdf` which can served you as a reference to derive this equations. 
 
 $$
-\begin{equation}
 \delta V = \sum_t \delta \hat{y}_t \frac{\partial \hat{y}_t}{\partial V} = \sum_t (\delta \hat{y}_t \odot \frac{\partial \text{softmax}}{\partial (V h_t)}) h_t^T
-\end{equation}
 $$
 
 $$
-\begin{equation}
 \delta h_t = V^T (\delta \hat{y}_t \odot \frac{\partial \text{softmax}}{\partial (V h_t)}) + W^T (\delta h_{t+1} \odot \frac{\partial f}{\partial x} |_t)
-\end{equation}
 $$
 where the derivative of $f$ is evaluated at the input of $f$ at time step t. 
 $$
-\begin{equation}
 \delta W = \sum_t (\delta h_t \odot \frac{\partial f}{\partial x}|_{t}) h_{t-1}^T
-\end{equation}
 $$
 
 $$
-\begin{equation}
 \delta U = \sum_t (\delta h_t \odot \frac{\partial f}{\partial x}|_{t}) x_t^T
-\end{equation}
 $$
 
 $$
-\begin{equation}
 \delta b = (\delta h_t \odot \frac{\partial f}{\partial x}|_{t})
-\end{equation}
 $$
 
 # 3. Next word prediction
