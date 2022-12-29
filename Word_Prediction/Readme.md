@@ -36,12 +36,6 @@ This section is not going to be a step-by-step derviation of the backpropagation
 
 $$
 \begin{equation}
-\delta \hat{y}_t = \frac{\partial \mathcal{L}}{\partial \hat{y}_t}
-\end{equation}
-$$
-
-$$
-\begin{equation}
 \delta V = \sum_t \delta \hat{y}_t \frac{\partial \hat{y}_t}{\partial V} = \sum_t (\delta \hat{y}_t \odot \frac{\partial \text{softmax}}{\partial (V h_t)}) h_t^T
 \end{equation}
 $$
